@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class ConverterPage extends StatefulWidget {
   @override
@@ -6,181 +7,227 @@ class ConverterPage extends StatefulWidget {
 }
 
 class _ConverterPageState extends State<ConverterPage> {
-  String _message;
   String _value;
-  String _value2;
+  double _result;
+  TextEditingController _text;
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  @override
+  void initState() {
+    super.initState();
+    _text = TextEditingController();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Convertidor de longitud'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
-          children: [
-            Row(
+      key: _scaffoldKey,
+      body: Column(
+        children: [
+          Stack(
+            children: [
+              Image(
+                image: AssetImage('images/fondo.png'),
+                fit: BoxFit.fill,
+                height: 100,
+                width: MediaQuery.of(context).size.width,
+              ),
+              Positioned(
+                top: 25,
+                left: 20,
+                child: Text(
+                  'Convertidor de longitud',
+                  style: TextStyle(
+                    color: Colors.lightBlue[50],
+                    fontFamily: 'Righteous',
+                    fontSize: 40,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(15.0, 20.0, 15.0, 8.0),
+            child: Wrap(
+              spacing: 15,
+              alignment: WrapAlignment.center,
+              crossAxisAlignment: WrapCrossAlignment.center,
               children: [
-                Expanded(
-                  child: Text(
-                    'Cantidad:',
+                Text(
+                  'Cantidad:',
+                  style: TextStyle(
+                    fontFamily: 'Righteous',
+                    fontWeight: FontWeight.bold,
+                    fontSize: 25,
+                  ),
+                ),
+                Container(
+                  height: 40,
+                  width: MediaQuery.of(context).size.width * 0.5,
+                  decoration: BoxDecoration(
+                    color: Colors.lightBlue[50],
+                    borderRadius: BorderRadius.circular(25),
+                  ),
+                  child: TextFormField(
+                    controller: _text,
+                    textAlign: TextAlign.center,
                     style: TextStyle(
-                      fontWeight: FontWeight.bold,
+                      color: Colors.indigo[900],
+                      fontSize: 25,
+                      fontFamily: 'Righteous',
+                    ),
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                    ),
+                    cursorColor: Colors.indigo[900],
+                  ),
+                ),
+                RaisedButton(
+                  color: Colors.indigo[900],
+                  child: Text(
+                    'Convertir',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontFamily: 'Righteous',
                       fontSize: 25,
                     ),
                   ),
-                ),
-
-                Expanded(
-                  flex: 3,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.grey[300],
-                      borderRadius: BorderRadius.circular(25),
-                    ),
-                    //height: 30,
-                    //width: 100,
-                    child: TextFormField(
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 25,
-                      ),
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(width: 10),
-                Expanded(
-                  flex: 2,
-                  child: RaisedButton(
-                    color: Colors.blue,
-                    child: Text(
-                      'Convertir',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 25,
-                      ),
-                    ),
-                    onPressed: () {
-                      //if (_formKey.currentState.validate()) {}
-                    },
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(15),
-                        bottomRight: Radius.circular(15),
-                      ),
+                  onPressed: _swapTo,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(15),
+                      bottomRight: Radius.circular(15),
                     ),
                   ),
                 ),
                 //SizedBox(width: 8),
               ],
             ),
-            Row(
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(20.0, 8.0, 20.0, 8.0),
+            child: Wrap(
+              spacing: 15,
+              alignment: WrapAlignment.center,
+              crossAxisAlignment: WrapCrossAlignment.center,
               children: [
-                Expanded(
-                  child: Text(
-                    'De',
-                    style: TextStyle(
-                      fontSize: 25,
-                      fontWeight: FontWeight.bold,
+                DropdownButtonHideUnderline(
+                  child: DropdownButton<String>(
+                    hint: Text(
+                      'Medidas',
+                      style: TextStyle(
+                        fontSize: 25,
+                        fontFamily: 'Righteous',
+                      ),
                     ),
-                  ),
-                ),
-                Expanded(
-                  child: DropdownButtonHideUnderline(
-                    child: DropdownButton<String>(
-                      hint: Text(
-                        'Medidas',
-                        style: TextStyle(
-                          fontSize: 25,
+                    items: [
+                      DropdownMenuItem(
+                        value: '1',
+                        child: Text(
+                          'Metros(m)',
+                          style: TextStyle(
+                            fontSize: 25,
+                            fontFamily: 'Righteous',
+                          ),
                         ),
                       ),
-                      items: [
-                        DropdownMenuItem(
-                          value: '1',
-                          child: Text(
-                            'metros',
-                            style: TextStyle(
-                              fontSize: 25,
-                            ),
+                      DropdownMenuItem(
+                        value: '2',
+                        child: Text(
+                          'Kilometros(Km)',
+                          style: TextStyle(
+                            fontSize: 25,
+                            fontFamily: 'Righteous',
                           ),
                         ),
-                        DropdownMenuItem(
-                          value: '2',
-                          child: Text(
-                            'kilometros',
-                            style: TextStyle(
-                              fontSize: 25,
-                            ),
-                          ),
-                        )
-                      ],
-                      onChanged: (value) {
-                        setState(() {
-                          _value = value;
-                        });
-                      },
-                      value: _value,
-                    ),
+                      )
+                    ],
+                    onChanged: (value) {
+                      setState(() {
+                        _value = value;
+                      });
+                      _swapTo();
+                    },
+                    value: _value,
                   ),
                 ),
-                SizedBox(width: 8),
-                Expanded(
-                  child: Text(
-                    'A:',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 25,
-                    ),
-                  ),
+                Icon(
+                  Icons.swap_horiz,
+                  size: 35,
                 ),
-                Expanded(
-                  child: DropdownButtonHideUnderline(
-                    child: DropdownButton<String>(
-                      hint: Text(
-                        'Medidas',
-                        style: TextStyle(
-                          fontSize: 25,
-                        ),
-                      ),
-                      items: [
-                        DropdownMenuItem(
-                          value: '1',
-                          child: Text(
-                            'metros',
-                            style: TextStyle(
-                              fontSize: 25,
-                            ),
-                          ),
-                        ),
-                        DropdownMenuItem(
-                          value: '2',
-                          child: Text(
-                            'kilometros',
-                            style: TextStyle(
-                              fontSize: 25,
-                            ),
-                          ),
-                        )
-                      ],
-                      onChanged: (value) {
-                        setState(() {
-                          _value2 = value;
-                        });
-                      },
-                      value: _value2,
-                    ),
+                Text(
+                  _value == '1' ? 'Kilometros(Km)' : 'Metros(m)',
+                  style: TextStyle(
+                    fontSize: 25,
+                    fontFamily: 'Righteous',
                   ),
                 ),
               ],
             ),
-          ],
-        ),
+          ),
+          SizedBox(
+            height: 100,
+          ),
+          Container(
+            width: MediaQuery.of(context).size.width * 0.75,
+            color: Colors.lightBlue[50],
+            child: Wrap(
+              spacing: 15,
+              alignment: WrapAlignment.center,
+              crossAxisAlignment: WrapCrossAlignment.center,
+              children: [
+                Text(
+                  'Resultado:',
+                  style: TextStyle(fontFamily: 'Righteous', fontSize: 20),
+                ),
+                Text(
+                  _result == null ? '' : _result.toString(),
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontFamily: 'Righteous',
+                  ),
+                ),
+                Text(
+                  _value == '1' ? 'Kilometros(Km)' : 'Metros(m)',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontFamily: 'Righteous',
+                  ),
+                ),
+                IconButton(
+                  icon: Icon(Icons.content_copy),
+                  color: Colors.indigo[900],
+                  onPressed: () {
+                    _copyToClipboard(_result);
+                  },
+                )
+              ],
+            ),
+          )
+        ],
       ),
     );
+  }
+
+  _copyToClipboard(double result) {
+    final snackBar = SnackBar(
+      content: Text('Resultado copiado al portapapeles'),
+    );
+    Clipboard.setData(ClipboardData(text: result.toString()));
+    _scaffoldKey.currentState.showSnackBar(snackBar);
+  }
+
+  _swapTo() {
+    if (double.tryParse(_text.text) != null) {
+      _result = double.parse(_text.text);
+      if (_value == '1') {
+        _result /= 1000;
+      } else {
+        _result *= 1000;
+      }
+      setState(() {});
+    }
   }
 }
