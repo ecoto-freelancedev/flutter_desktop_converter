@@ -27,10 +27,10 @@ class _ConverterPageState extends State<ConverterPage> {
           Stack(
             children: [
               Image(
-                image: AssetImage('images/fondo.png'),
-                fit: BoxFit.fill,
                 height: 100,
                 width: MediaQuery.of(context).size.width,
+                image: AssetImage('images/fondo.png'),
+                fit: BoxFit.fill,
               ),
               Positioned(
                 top: 25,
@@ -146,7 +146,6 @@ class _ConverterPageState extends State<ConverterPage> {
                       setState(() {
                         _value = value;
                       });
-                      _swapTo();
                     },
                     value: _value,
                   ),
@@ -166,10 +165,10 @@ class _ConverterPageState extends State<ConverterPage> {
             ),
           ),
           SizedBox(
-            height: 100,
+            height: 75,
           ),
           Container(
-            width: MediaQuery.of(context).size.width * 0.75,
+            width: MediaQuery.of(context).size.width * 0.50,
             color: Colors.lightBlue[50],
             child: Wrap(
               spacing: 15,
@@ -213,7 +212,14 @@ class _ConverterPageState extends State<ConverterPage> {
 
   _copyToClipboard(double result) {
     final snackBar = SnackBar(
-      content: Text('Resultado copiado al portapapeles'),
+      content: Text(
+        'Resultado copiado al portapapeles',
+        textAlign: TextAlign.center,
+      ),
+      behavior: SnackBarBehavior.floating,
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(25))),
+      width: 270,
     );
     Clipboard.setData(ClipboardData(text: result.toString()));
     _scaffoldKey.currentState.showSnackBar(snackBar);
