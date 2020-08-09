@@ -16,6 +16,7 @@ class _ConverterPageState extends State<ConverterPage> {
   void initState() {
     super.initState();
     _text = TextEditingController();
+    _result = 0.0;
   }
 
   @override
@@ -27,7 +28,7 @@ class _ConverterPageState extends State<ConverterPage> {
           Stack(
             children: [
               Image(
-                height: 100,
+                height: 145,
                 width: MediaQuery.of(context).size.width,
                 image: AssetImage('images/fondo.png'),
                 fit: BoxFit.fill,
@@ -35,6 +36,7 @@ class _ConverterPageState extends State<ConverterPage> {
               Positioned(
                 top: 25,
                 left: 20,
+                width: MediaQuery.of(context).size.width,
                 child: Text(
                   'Convertidor de longitud',
                   style: TextStyle(
@@ -68,18 +70,29 @@ class _ConverterPageState extends State<ConverterPage> {
                     color: Colors.lightBlue[50],
                     borderRadius: BorderRadius.circular(25),
                   ),
-                  child: TextFormField(
-                    controller: _text,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Colors.indigo[900],
-                      fontSize: 25,
-                      fontFamily: 'Righteous',
-                    ),
-                    decoration: InputDecoration(
-                      border: InputBorder.none,
-                    ),
-                    cursorColor: Colors.indigo[900],
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: TextField(
+                          controller: _text,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Colors.indigo[900],
+                            fontSize: 25,
+                            fontFamily: 'Righteous',
+                          ),
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                          ),
+                          keyboardType: TextInputType.number,
+                        ),
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.clear),
+                        color: Colors.indigo[900],
+                        onPressed: () => _text.clear(),
+                      )
+                    ],
                   ),
                 ),
                 RaisedButton(
@@ -92,7 +105,7 @@ class _ConverterPageState extends State<ConverterPage> {
                       fontSize: 25,
                     ),
                   ),
-                  onPressed: _swapTo,
+                  onPressed: _value == '1' || _value == '2' ? _swapTo : null,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(15),
@@ -100,7 +113,6 @@ class _ConverterPageState extends State<ConverterPage> {
                     ),
                   ),
                 ),
-                //SizedBox(width: 8),
               ],
             ),
           ),
@@ -145,6 +157,7 @@ class _ConverterPageState extends State<ConverterPage> {
                     onChanged: (value) {
                       setState(() {
                         _value = value;
+                        _result = 0.0;
                       });
                     },
                     value: _value,
