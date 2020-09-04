@@ -20,9 +20,9 @@ class ConverterPageBloc {
   convertTo(double result) {
     _result = result;
     if (_value == '1') {
-      _result /= 1000;
+      _result /= 1000; //Convert to kilometers
     } else {
-      _result *= 1000;
+      _result *= 1000; //Convert to meters
     }
     _controllerResult.add(_result);
   }
