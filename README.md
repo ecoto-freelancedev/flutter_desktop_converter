@@ -1,16 +1,18 @@
-# flutter_desktop_converter
+# Flutter Desktop Converter
 
-A new Flutter application with desktop support.
+A simple measure converter example that convert an amount from meters to kilometers or kilometers to meters. This example implements the BloC pattern.
 
-## Getting Started
+![](demo_converter.gif)
 
-This project is a starting point for a Flutter application.
+## Constructed with 🛠️
 
-A few resources to get you started if this is your first Flutter project:
+- [Flutter](https://flutter.dev) - used Framework
+- [Dart](https://dart.dev/) - used language
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+## Author ✒️
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- **Eduardo Coto** - creator of proyect.
+
+## License 📄
+
+<p> This project is under the License(MIT)</p>
